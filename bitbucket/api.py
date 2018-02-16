@@ -207,6 +207,11 @@ class Repository(object):
     def __repr__(self):
         return '<Repository: %s\'s %s>' % (self.username, self.slug)
 
+    def add_group(self, group_slug, privilege):
+        # PUT https://api.bitbucket.org/1.0/group-privileges/{accountname}/{repo_slug}/{group_owner}/{group_slug} --data "{privilege}"
+        url = api_base + 'group-privileges/%s/%s/%s/%s/' % (self.username, self.slug, self.username, group_slug)
+        return json.loads(self.bb.load_url(url, method="PUT", data=privilege))
+
 
 class Issue(object):
 
