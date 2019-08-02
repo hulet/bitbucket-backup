@@ -111,7 +111,7 @@ def get_repositories(
             auth = HTTPBasicAuth(username, password)
         if auth is None:
             exit("Must provide username/password or oath credentials")
-        if not team or username:
+        if not (team or username):
             response = requests.get("https://api.bitbucket.org/2.0/user/", auth=auth)
             username = response.json().get("username")
         url = "https://api.bitbucket.org/2.0/repositories/{}/".format(team or username)
