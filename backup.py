@@ -155,6 +155,13 @@ def clone_repo(
     slug = repo.get("slug")
     owner = repo.get("owner").get("username") or repo.get("owner").get("nickname")
     owner_url = quote(owner)
+
+    ssh_href = None
+    clone = repo.get("links").get("clone")
+    for i in clone:
+        if 'ssh' == i['name']:
+            ssh_href = i['href']
+
     if http and not all((username, password)):
         exit("Cannot backup via http without username and password" % scm)
     slug_url = quote(slug)
@@ -182,10 +189,9 @@ def clone_repo(
                 slug_url,
             )
         else:
-            command = "%s git@bitbucket.org:%s/%s.git" % (
+            command = "%s %s" % (
                 git_command,
-                owner_url,
-                slug_url,
+                ssh_href,
             )
     if not command:
         exit("could not build command (scm [%s] not recognized?)" % scm)
